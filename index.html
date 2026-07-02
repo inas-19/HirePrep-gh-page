@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HirePrep - Siap Interview, Siap Sukses.</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            500: '#1d4ed8', // Darker blue accent from screenshot
+                            600: '#1e40af', // Primary button blue
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        slate: {
+                            75: '#f8fafc',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Matching the soft background in screenshot */
+        }
+        /* Custom scrollbar style */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <!-- Top Global Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 h-16 flex items-center px-4 md:px-8 justify-between">
+        <div class="flex items-center space-x-3">
+            <!-- Mobile Menu Toggle -->
+            <button onclick="toggleSidebar()" class="md:hidden text-slate-600 hover:text-slate-900 focus:outline-none">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-2.5">
+                <div class="bg-brand-500 text-white w-9 h-9 rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-handshake text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-slate-900 tracking-tight flex items-center">
+                        HirePrep
+                    </h1>
+                    <span class="block text-[9px] font-semibold text-slate-400 -mt-1 tracking-wider uppercase">Siap Interview, Siap Sukses.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Middle Tabs for Dual View (Platform vs Strategy) -->
+        <div class="hidden md:flex items-center space-x-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <button onclick="switchViewMode('product')" id="nav-btn-product" class="px-5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 bg-white text-brand-600 shadow-sm">
+                <i class="fa-solid fa-laptop-code mr-1.5"></i>Demo Platform
+            </button>
+            <button onclick="switchViewMode('strategy')" id="nav-btn-strategy" class="px-5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all duration-300">
+                <i class="fa-solid fa-chart-line mr-1.5"></i>BMC & VPC Group 8
+            </button>
+        </div>
+
+        <!-- Right User Navigation profile -->
+        <div class="flex items-center space-x-4">
+            <!-- Strategic Toggle Shortcut for Mobile -->
+            <button onclick="toggleMobileStrategic()" class="md:hidden px-2.5 py-1.5 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold flex items-center">
+                <i class="fa-solid fa-layer-group mr-1"></i> Canvas
+            </button>
+            
+            <div class="hidden sm:flex items-center space-x-3 pr-2 border-r border-slate-200">
+                <span class="text-xs font-medium text-slate-500">Halo, <strong class="text-slate-800 font-bold">Harumi!</strong></span>
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150&auto=format&fit=crop" 
+                     onerror="this.src='https://placehold.co/150x150/1e40af/ffffff?text=Harumi'"
+                     alt="Harumi Profile" class="w-8 h-8 rounded-full border-2 border-slate-200 object-cover">
+            </div>
+            
+            <div class="relative">
+                <button onclick="triggerNotification()" class="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-50 transition relative">
+                    <i class="fa-regular fa-bell text-lg"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Shell -->
+    <div class="flex flex-1 relative">
+        
+        <!-- Sidebar Navigation (Matching exact photo layout & items) -->
+        <aside id="sidebar-panel" class="fixed inset-y-16 left-0 z-40 w-64 bg-white border-r border-slate-200 transform -translate-x-full transition-transform duration-300 md:translate-x-0 md:sticky md:top-16 md:h-[calc(100vh-4rem)] flex flex-col justify-between p-4 shrink-0">
+            <div class="space-y-6">
+                <!-- Navigation Menu Group -->
+                <nav class="space-y-1">
+                    <button onclick="switchTab('dashboard')" id="side-dashboard" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-brand-500 text-white shadow-sm">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    
+                    <button onclick="switchTab('simulasi')" id="side-simulasi" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                        <i class="fa-solid fa-microphone-lines"></i>
+                        <span>Simulasi Interview</span>
+                    </button>
+                    
+                    <button onclick="switchTab('evaluasi')" id="side-evaluasi" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <span>Evaluasi &amp; Feedback</span>
+                    </button>
+                    
+                    <button onclick="switchTab('tips')" id="side-tips" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                        <i class="fa-regular fa-lightbulb"></i>
+                        <span>Tips Karir</span>
+                    </button>
+                    
+                    <button onclick="switchTab('komunitas')" id="side-komunitas" class="sidebar-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-group"></i>
+                            <span>Komunitas</span>
+                        </div>
+                        <span class="bg-blue-100 text-brand-600 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">Baru</span>
+                    </button>
+
+                    <button onclick="switchTab('mentor')" id="side-mentor" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span>Mentor &amp; Alumni</span>
+                    </button>
+
+                    <button onclick="switchTab('progress')" id="side-progress" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Progress Saya</span>
+                    </button>
+
+                    <button onclick="switchTab('pengaturan')" id="side-pengaturan" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Pengaturan</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Upgrade to Premium Promo Card (matching image) -->
+            <div class="mt-auto pt-4 border-t border-slate-100">
+                <div class="bg-gradient-to-br from-brand-50 to-blue-100/50 rounded-2xl p-4 border border-brand-100/60 text-left relative overflow-hidden">
+                    <div class="absolute -right-8 -bottom-8 w-20 h-20 bg-brand-500/5 rounded-full pointer-events-none"></div>
+                    <div class="flex items-center space-x-1 mb-1">
+                        <h4 class="font-bold text-xs text-slate-900">Upgrade ke Premium</h4>
+                        <i class="fa-solid fa-crown text-amber-500 text-[10px]"></i>
+                    </div>
+                    <p class="text-[11px] text-slate-500 leading-relaxed mb-3">
+                        Akses semua fitur eksklusif, mentoring, dan mock interview tak terbatas.
+                    </p>
+                    <button onclick="openPremiumModal()" class="w-full py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-500/10 transition-all duration-200">
+                        Upgrade Sekarang
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay backdrop for mobile menu navigation -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 z-30 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300"></div>
+
+        <!-- Main Dynamic App Panel -->
+        <main class="flex-grow p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full space-y-8">
+            
+            <!-- ================= PAGE 1: DEMO PLATFORM (PRODUCT LAYOUT) ================= -->
+            <div id="view-product-container" class="space-y-6">
+
+                <!-- Dynamic Inner Tabs Switcher -->
+                <div id="tab-dashboard" class="inner-tab-content space-y-6">
+                    
+                    <!-- Greeting and Streak Row -->
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center">
+                                Dashboard, Harumi! <span class="ml-2 animate-bounce">👋</span>
+                            </h2>
+                            <p class="text-sm md:text-base text-slate-500 mt-0.5 font-medium">Terus tingkatkan persiapanmu dan raih karir impianmu.</p>
+                        </div>
+
+                        <!-- Streak Widget from Image -->
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-xs max-w-xs w-full lg:w-auto shrink-0">
+                            <div class="flex items-center space-x-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl shadow-inner-sm animate-pulse">
+                                    <i class="fa-solid fa-fire-flame-curved"></i>
+                                </div>
+                                <div class="text-left">
+                                    <div class="flex items-center space-x-1.5">
+                                        <span id="streak-counter" class="text-lg font-black text-slate-900">7</span>
+                                        <span class="text-xs font-bold text-orange-600 bg-orange-100/70 px-1.5 py-0.5 rounded-md">Hari Beruntun</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 font-medium">Pertahankan konsistensimu!</p>
+                                </div>
+                            </div>
+                            <button onclick="claimDailyStreak()" class="ml-4 px-3 py-1.5 bg-slate-50 hover:bg-orange-50 text-xs font-bold text-slate-700 hover:text-orange-600 rounded-lg border border-slate-200 hover:border-orange-200 transition-all duration-200">
+                                Absen
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Top Row: Progress vs Mulai Simulasi -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        
+                        <!-- Progressmu Card -->
+                        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <h3 class="font-extrabold text-slate-900 text-sm uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fa-solid fa-chart-line text-brand-500"></i>
+                                    <span>Progressmu</span>
+                                </h3>
+                                <button onclick="switchTab('progress')" class="p-1 text-slate-400 hover:text-slate-600 rounded">
+                                    <i class="fa-solid fa-gear"></i>
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pt-5 items-center">
+                                <!-- Vertical indicator column -->
+                                <div class="md:col-span-3 flex md:flex-col justify-center items-center md:border-r border-slate-100 md:pr-4">
+                                    <div class="h-2 w-32 md:w-2 md:h-28 bg-slate-100 rounded-full relative overflow-hidden flex flex-col justify-end">
+                                        <div class="absolute bottom-0 w-full bg-emerald-500 rounded-full" style="height: 82%"></div>
+                                        <div class="absolute bottom-0 w-full bg-brand-500 rounded-full" style="height: 60%"></div>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 font-bold mt-2 text-center">Overall Stats</p>
+                                </div>
+
+                                <!-- Progress indicators list -->
+                                <div class="md:col-span-9 space-y-4">
+                                    <!-- Item 1: Kesiapan Mental -->
+                                    <div class="space-y-1">
+                                        <div class="flex items-center justify-between text-xs font-bold">
+                                            <div class="flex items-center space-x-2 text-slate-700">
+                                                <i class="fa-regular fa-face-smile text-emerald-500"></i>
+                                                <span>Kesiapan Mental</span>
+                                            </div>
+                                            <span class="text-slate-900">82%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 rounded-full h-2">
+                                            <div class="bg-emerald-500 h-2 rounded-full" style="width: 82%"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Item 2: Kunci Sukses Interview -->
+                                    <div class="space-y-1">
+                                        <div class="flex items-center justify-between text-xs font-bold">
+                                            <div class="flex items-center space-x-2 text-slate-700">
+                                                <i class="fa-solid fa-book-open text-brand-500"></i>
+                                                <span>Kunci Sukses Interview</span>
+                                            </div>
+                                            <span class="text-slate-500">4 Bab Terbuka <span class="text-slate-900 ml-1">(60%)</span></span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 rounded-full h-2">
+                                            <div class="bg-brand-500 h-2 rounded-full" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Item 3: Jadwal Latihan -->
+                                    <div class="space-y-1">
+                                        <div class="flex items-center justify-between text-xs font-bold">
+                                            <div class="flex items-center space-x-2 text-slate-700">
+                                                <i class="fa-regular fa-calendar-check text-indigo-500"></i>
+                                                <span>Jadwal Latihan</span>
+                                            </div>
+                                            <span class="text-slate-500">Selasa, 14:00 <span class="text-slate-900 ml-1">(70%)</span></span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 rounded-full h-2">
+                                            <div class="bg-indigo-500 h-2 rounded-full" style="width: 70%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mulai Simulasi Baru Card -->
+                        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+                            <div class="pb-3 border-b border-slate-100">
+                                <h3 class="font-extrabold text-slate-900 text-sm uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fa-solid fa-rocket text-brand-500"></i>
+                                    <span>Mulai Simulasi Baru</span>
+                                </h3>
+                            </div>
+
+                            <div class="space-y-4 pt-4">
+                                <button onclick="startQuickSimulation('tech')" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-sm font-bold shadow-md shadow-brand-500/10 transition-all duration-200">
+                                    Pilih Skenario &amp; Mulai Latihan
+                                </button>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <!-- HRD Interview Option -->
+                                    <div onclick="startQuickSimulation('hr')" class="cursor-pointer border border-slate-200 rounded-2xl p-3 flex items-center space-x-2.5 hover:border-brand-300 hover:bg-brand-50/20 transition-all duration-200">
+                                        <div class="text-2xl text-blue-500">
+                                            <i class="fa-solid fa-users"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <h4 class="text-xs font-extrabold text-slate-900">Interview HRD</h4>
+                                            <p class="text-[10px] text-slate-400">Umum &amp; Freshgrad</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Technical Option -->
+                                    <div onclick="startQuickSimulation('tech')" class="cursor-pointer border border-slate-200 rounded-2xl p-3 flex items-center space-x-2.5 hover:border-brand-300 hover:bg-brand-50/20 transition-all duration-200">
+                                        <div class="text-2xl text-slate-700">
+                                            <i class="fa-solid fa-laptop-code"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <h4 class="text-xs font-extrabold text-slate-900">Technical Interview</h4>
+                                            <p class="text-[10px] text-slate-400">e.g., Software Dev</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Panel Interview Option -->
+                                    <div onclick="startQuickSimulation('pman')" class="cursor-pointer border border-slate-200 rounded-2xl p-3 flex items-center space-x-2.5 hover:border-brand-300 hover:bg-brand-50/20 transition-all duration-200">
+                                        <div class="text-2xl text-amber-500">
+                                            <i class="fa-solid fa-chalkboard-user"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <h4 class="text-xs font-extrabold text-slate-900">Panel Interview</h4>
+                                            <p class="text-[10px] text-slate-400">Multi-Interviewer</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mock Psychologist Premium -->
+                                    <div onclick="openPremiumModal()" class="cursor-pointer border border-slate-200 rounded-2xl p-3 flex items-center space-x-2.5 hover:border-indigo-300 hover:bg-indigo-50/30 transition-all duration-200 relative overflow-hidden bg-indigo-50/10">
+                                        <div class="absolute right-1 top-1 text-[8px] bg-brand-500 text-white font-black px-1 rounded uppercase tracking-widest scale-75">Premium</div>
+                                        <div class="text-2xl text-indigo-500">
+                                            <i class="fa-solid fa-user-doctor"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <h4 class="text-xs font-extrabold text-slate-900">Mock Psikolog</h4>
+                                            <p class="text-[10px] text-indigo-600 font-medium">Feedback Ahli</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom Row: 3 Columns Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                        <!-- Column 1: Sesi Terakhir (Tonton Ulang) -->
+                        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                                <h3 class="font-extrabold text-slate-900 text-xs uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fa-solid fa-circle-play text-red-500"></i>
+                                    <span>Sesi Terakhir</span>
+                                </h3>
+                                <button onclick="switchTab('evaluasi')" class="text-xs font-semibold text-brand-500 hover:text-brand-600 transition">Lihat Semua</button>
+                            </div>
+
+                            <div class="space-y-4 pt-4">
+                                <!-- Video Replay Card Container -->
+                                <div class="relative rounded-2xl overflow-hidden group shadow-sm bg-slate-900 aspect-video flex items-center justify-center">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=350&auto=format&fit=crop" 
+                                         onerror="this.src='https://placehold.co/350x200/1e293b/ffffff?text=Video+Recording'"
+                                         alt="Video Mock Interview" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-300">
+                                    
+                                    <!-- Play Button overlay -->
+                                    <button onclick="playLastRecording()" class="z-10 w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-transform duration-200">
+                                        <i class="fa-solid fa-play text-lg ml-1 text-brand-500"></i>
+                                    </button>
+
+                                    <!-- Bottom meta tags overlay -->
+                                    <div class="absolute bottom-2 left-2 right-2 flex justify-between items-center bg-slate-900/80 backdrop-blur-xs px-2.5 py-1.5 rounded-lg text-[10px] text-white">
+                                        <span>Mock Interview</span>
+                                        <span class="font-bold">28 Mei 2025 · 10:30</span>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                                    <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                                        <span class="text-[9px] text-slate-400 font-bold uppercase block">Kepercayaan Diri</span>
+                                        <span class="font-extrabold text-emerald-600">Tinggi</span>
+                                    </div>
+                                    <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                                        <span class="text-[9px] text-slate-400 font-bold uppercase block">Pengelolaan Emosi</span>
+                                        <span class="font-extrabold text-amber-500">Sedang</span>
+                                    </div>
+                                </div>
+
+                                <!-- Rating Stars -->
+                                <div class="flex items-center justify-between text-xs font-semibold text-slate-600 bg-slate-50/50 p-2.5 rounded-xl border border-slate-100">
+                                    <span>Rating Skor</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-amber-400 text-[10px]">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </div>
+                                        <span class="text-slate-800 text-[11px] font-bold">(4.2)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Statistik Saya -->
+                        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm flex flex-col justify-between">
+                            <div class="pb-3 border-b border-slate-100">
+                                <h3 class="font-extrabold text-slate-900 text-xs uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fa-solid fa-chart-simple text-blue-500"></i>
+                                    <span>Statistik Saya</span>
+                                </h3>
+                            </div>
+
+                            <div class="space-y-4 pt-4 flex-1 flex flex-col justify-between">
+                                <!-- Stat item 1: Rata-rata Skor Percaya Diri -->
+                                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 font-bold uppercase block">Rata-rata Skor Percaya Diri</span>
+                                            <span class="text-2xl font-black text-slate-900">78%</span>
+                                        </div>
+                                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center">
+                                            <i class="fa-solid fa-arrow-up mr-1"></i>12% vs mgu lalu
+                                        </span>
+                                    </div>
+                                    <!-- Embedded Sparkline Graphic mockup -->
+                                    <div class="h-10 mt-2 w-full flex items-end">
+                                        <svg class="w-full h-full text-brand-500" viewBox="0 0 100 30" preserveAspectRatio="none">
+                                            <path d="M0,25 Q15,10 30,18 T60,8 T90,3 T100,5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                                            <path d="M0,25 Q15,10 30,18 T60,8 T90,3 T100,5 L100,30 L0,30 Z" fill="url(#blue-gradient)" opacity="0.1" />
+                                            <defs>
+                                                <linearGradient id="blue-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                    <stop offset="0%" stop-color="currentColor" />
+                                                    <stop offset="100%" stop-color="transparent" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Stat item 2: Waktu Respon -->
+                                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 font-bold uppercase block">Waktu Respon</span>
+                                            <span class="text-2xl font-black text-slate-900">2.8 <span class="text-xs font-semibold text-slate-500">dtk</span></span>
+                                        </div>
+                                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center">
+                                            <i class="fa-solid fa-arrow-down mr-1"></i>0.6 dtk vs mgu lalu
+                                        </span>
+                                    </div>
+                                    <!-- Response graph line mockup (declining is good!) -->
+                                    <div class="h-10 mt-2 w-full flex items-end">
+                                        <svg class="w-full h-full text-emerald-500" viewBox="0 0 100 30" preserveAspectRatio="none">
+                                            <path d="M0,5 Q15,10 30,15 T60,20 T90,25 T100,28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                                            <path d="M0,5 Q15,10 30,15 T60,20 T90,25 T100,28 L100,30 L0,30 Z" fill="url(#green-gradient)" opacity="0.1" />
+                                            <defs>
+                                                <linearGradient id="green-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                    <stop offset="0%" stop-color="currentColor" />
+                                                    <stop offset="100%" stop-color="transparent" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Aktivitas Mendatang -->
+                        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm flex flex-col justify-between">
+                            <div class="pb-3 border-b border-slate-100">
+                                <h3 class="font-extrabold text-slate-900 text-xs uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fa-regular fa-calendar-days text-indigo-500"></i>
+                                    <span>Aktivitas Mendatang</span>
+                                </h3>
+                            </div>
+
+                            <div class="space-y-3 pt-4">
+                                <!-- Activity 1 -->
+                                <div class="p-2.5 rounded-xl border border-slate-150 hover:bg-slate-50 transition cursor-pointer flex justify-between items-center">
+                                    <div class="flex items-center space-x-2.5">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-brand-500 flex items-center justify-center text-xs font-bold shrink-0">
+                                            <i class="fa-regular fa-calendar"></i>
+                                        </div>
+                                        <div class="text-left text-xs">
+                                            <h4 class="font-bold text-slate-800">Sesi Latihan Terjadwal</h4>
+                                            <p class="text-[10px] text-slate-400">Selasa, 3 Juni 2025 · 14:00</p>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                                </div>
+
+                                <!-- Activity 2 -->
+                                <div class="p-2.5 rounded-xl border border-slate-150 hover:bg-slate-50 transition cursor-pointer flex justify-between items-center">
+                                    <div class="flex items-center space-x-2.5">
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs font-bold shrink-0">
+                                            <i class="fa-solid fa-people-arrows"></i>
+                                        </div>
+                                        <div class="text-left text-xs">
+                                            <h4 class="font-bold text-slate-800">Mock Interview (Peer)</h4>
+                                            <p class="text-[10px] text-slate-400">Rabu, 4 Juni 2025 · 16:00</p>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                                </div>
+
+                                <!-- Activity 3 -->
+                                <div class="p-2.5 rounded-xl border border-slate-150 hover:bg-slate-50 transition cursor-pointer flex justify-between items-center">
+                                    <div class="flex items-center space-x-2.5">
+                                        <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold shrink-0">
+                                            <i class="fa-solid fa-headset"></i>
+                                        </div>
+                                        <div class="text-left text-xs">
+                                            <h4 class="font-bold text-slate-800">Webinar: Tips Interview</h4>
+                                            <p class="text-[10px] text-slate-400">Sabtu, 7 Juni 2025 · 19:00</p>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                                </div>
+
+                                <button onclick="switchTab('progress')" class="w-full py-2.5 text-xs text-brand-600 hover:text-brand-700 font-extrabold text-center block bg-slate-50 hover:bg-slate-100 rounded-xl transition">
+                                    Lihat Semua Jadwal
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom CTA Banner matching screenshot exactly -->
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-white border border-emerald-100 rounded-3xl p-5 flex flex-col md:flex-row justify-between items-center gap-4 shadow-xs">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl shrink-0">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div class="text-left">
+                                <h3 class="font-bold text-sm md:text-base text-slate-900">Bergabung dengan Komunitas Interview Circle!</h3>
+                                <p class="text-xs text-slate-500">Latihan bersama teman, dapatkan feedback, dan bangun koneksi.</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('komunitas')" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-2xl text-xs flex items-center space-x-2 transition duration-200 shrink-0">
+                            <span>Gabung Sekarang</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Simulasi Tab Section -->
+                <div id="tab-simulasi" class="inner-tab-content hidden space-y-6">
+                    <div class="bg-gradient-to-r from-brand-600 to-indigo-700 rounded-3xl p-6 md:p-8 text-white relative overflow-hidden shadow-md">
+                        <div class="absolute -right-16 -top-16 w-48 h-48 bg-white/10 rounded-full blur-2xl"></div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">AI Simulated Mock Room</h2>
+                        <p class="text-sm text-slate-200 mt-1 max-w-xl">Latih jawaban wawancara Anda secara langsung, rekam performa Anda, dan peroleh ulasan instan dari asisten kecerdasan buatan HirePrep.</p>
+                        
+                        <div class="mt-6 flex flex-wrap gap-3">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-300 mb-1 tracking-wider">Bidang Keahlian</label>
+                                <select id="sim-track" onchange="loadSimulationQuestion()" class="bg-white/15 border border-white/20 text-white rounded-xl px-4 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-brand-200 text-slate-800">
+                                    <option class="text-slate-900" value="tech">Software Engineer / IT Starter</option>
+                                    <option class="text-slate-900" value="marketing">Marketing Specialist</option>
+                                    <option class="text-slate-900" value="hr">General HR / Fresh Graduate Generalist</option>
+                                    <option class="text-slate-900" value="pman">Product & Project Manager</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Interface Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        
+                        <!-- Left: Live Avatar Room -->
+                        <div class="lg:col-span-5 bg-slate-900 rounded-3xl p-6 min-h-[360px] flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-slate-800">
+                            <div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            
+                            <!-- Top Status Indicator bar -->
+                            <div class="flex justify-between items-center z-10">
+                                <span class="bg-rose-500/25 border border-rose-500/40 text-rose-400 text-[10px] font-extrabold px-3 py-1 rounded-full flex items-center space-x-1.5">
+                                    <span class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse"></span>
+                                    <span>SIMULASI AKTIF</span>
+                                </span>
+                                <span class="bg-slate-800 text-slate-300 text-[10px] font-bold px-3 py-1 rounded-full flex items-center space-x-1">
+                                    <i class="fa-solid fa-microchip text-emerald-400"></i>
+                                    <span>AI Coach Sarah</span>
+                                </span>
+                            </div>
+
+                            <!-- Avatar Container Mockup -->
+                            <div class="text-center space-y-4 my-auto py-8 z-10">
+                                <div class="relative inline-block">
+                                    <div id="coach-avatar" class="w-24 h-24 rounded-full bg-gradient-to-tr from-brand-400 to-indigo-500 flex items-center justify-center text-white text-3xl font-bold shadow-xl border-4 border-slate-800 mx-auto">
+                                        <i class="fa-solid fa-robot animate-bounce"></i>
+                                    </div>
+                                    <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-base">Sarah</h4>
+                                    <p class="text-[11px] text-slate-400">AI Mentor Specialist</p>
+                                </div>
+
+                                <!-- Speech dialogue bubble -->
+                                <div class="bg-slate-800/95 border border-slate-700/50 rounded-2xl p-4 max-w-sm mx-auto shadow-xl">
+                                    <p id="sim-dialogue" class="text-xs text-slate-100 italic leading-relaxed">
+                                        "Selamat datang di HirePrep! Lakukan persiapan terbaik Anda hari ini. Silakan baca pertanyaan di samping kanan, lalu susun draf jawaban terstruktur Anda."
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Audio Viz Wavebar -->
+                            <div class="flex justify-center items-center space-x-1 h-6">
+                                <span class="w-1 h-3 bg-brand-400 rounded-full animate-pulse"></span>
+                                <span class="w-1 h-5 bg-brand-400 rounded-full animate-pulse" style="animation-delay: 0.1s"></span>
+                                <span class="w-1 h-6 bg-brand-400 rounded-full animate-pulse" style="animation-delay: 0.2s"></span>
+                                <span class="w-1 h-4 bg-brand-400 rounded-full animate-pulse" style="animation-delay: 0.3s"></span>
+                                <span class="w-1 h-2 bg-brand-400 rounded-full animate-pulse" style="animation-delay: 0.4s"></span>
+                            </div>
+                        </div>
+
+                        <!-- Right: Question and Answer Space -->
+                        <div class="lg:col-span-7 bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                            <div class="space-y-4">
+                                <div class="bg-brand-50/50 border border-brand-100 p-4 rounded-2xl">
+                                    <span class="text-[10px] text-brand-600 font-extrabold uppercase tracking-widest block mb-1">Pertanyaan Simulasi</span>
+                                    <p id="sim-question-text" class="text-slate-900 font-extrabold text-base md:text-lg leading-relaxed">
+                                        "Ceritakan tentang diri Anda dan mengapa Anda adalah kandidat paling pas untuk role ini?"
+                                    </p>
+                                </div>
+
+                                <div class="flex items-center space-x-2 text-xs text-slate-500">
+                                    <i class="fa-regular fa-lightbulb text-amber-500"></i>
+                                    <span id="sim-tip-text">Tips: Bagikan pencapaian nyata yang paling relevan dengan kualifikasi pekerjaan.</span>
+                                </div>
+
+                                <!-- Text response block -->
+                                <div class="space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Ketik Draf Jawaban Anda:</label>
+                                        <button onclick="insertSimulatedDraft()" class="text-xs text-brand-500 hover:text-brand-600 font-extrabold flex items-center space-x-1">
+                                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                            <span>Pakai Draf Contoh</span>
+                                        </button>
+                                    </div>
+                                    <textarea id="sim-answer" rows="5" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs md:text-sm text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all duration-200" placeholder="Ketik jawaban latihan Anda di sini untuk diulas AI secara komprehensif..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <button onclick="runAiAnalysis()" class="flex-grow py-3.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold text-xs md:text-sm shadow-md shadow-brand-500/10 transition flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-chart-pie"></i>
+                                    <span>Analisis Jawaban &amp; Simpan</span>
+                                </button>
+                                <button onclick="resetSimulation()" class="px-5 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-xs md:text-sm transition">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- AI Evaluation Feedback Panel -->
+                    <div id="analysis-feedback-panel" class="hidden bg-white border border-slate-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-md">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-150 pb-4 gap-4">
+                            <div class="flex items-center space-x-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-square-poll-vertical"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h3 class="font-extrabold text-slate-900 text-lg">AI Coaching Report</h3>
+                                    <p class="text-xs text-slate-500">Evaluasi instan kesiapan dan rasa percaya diri jawaban Anda.</p>
+                                </div>
+                            </div>
+                            <!-- Dynamic Scores -->
+                            <div class="flex space-x-4">
+                                <div class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-center min-w-[100px]">
+                                    <span class="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Kepercayaan Diri</span>
+                                    <span id="ai-confidence" class="text-lg font-black text-emerald-600">88%</span>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-center min-w-[100px]">
+                                    <span class="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Komunikasi</span>
+                                    <span id="ai-communication" class="text-lg font-black text-brand-500">82%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feedback details columns -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-emerald-50/50 border border-emerald-100 p-5 rounded-2xl space-y-3">
+                                <h4 class="font-bold text-emerald-900 text-xs uppercase tracking-wider flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>Kelebihan Jawaban Anda</span>
+                                </h4>
+                                <ul id="feedback-positives-list" class="text-xs text-slate-700 space-y-2 list-disc pl-4 leading-relaxed font-medium">
+                                    <!-- Dynamic elements -->
+                                </ul>
+                            </div>
+
+                            <div class="bg-indigo-50/50 border border-indigo-100 p-5 rounded-2xl space-y-3">
+                                <h4 class="font-bold text-indigo-900 text-xs uppercase tracking-wider flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-circle-exclamation text-indigo-500"></i>
+                                    <span>Saran Perbaikan Detail</span>
+                                </h4>
+                                <ul id="feedback-negatives-list" class="text-xs text-slate-700 space-y-2 list-disc pl-4 leading-relaxed font-medium">
+                                    <!-- Dynamic elements -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- STAR Method suggested response -->
+                        <div class="bg-slate-50/50 border border-slate-150 p-5 rounded-2xl space-y-3">
+                            <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center space-x-2">
+                                <i class="fa-solid fa-sparkles text-amber-500"></i>
+                                <span>Rekomendasi Struktur Jawaban (Metode STAR)</span>
+                            </h4>
+                            <div id="feedback-star" class="text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-100 leading-relaxed font-medium">
+                                <!-- Dynamic elements -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Other static inner views to give polished finish -->
+                <div id="tab-evaluasi" class="inner-tab-content hidden space-y-6">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center space-y-4 shadow-sm">
+                        <div class="w-16 h-16 bg-blue-50 text-brand-500 rounded-full flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Ulasan &amp; Evaluasi Lengkap</h3>
+                        <p class="text-slate-500 max-w-md mx-auto text-sm">Semua histori pengerjaan interview Anda tercatat di sini lengkap dengan grafik progress per bab kunci sukses interview.</p>
+                        
+                        <div class="border border-slate-150 rounded-2xl p-4 bg-slate-50 text-left max-w-xl mx-auto space-y-3 text-xs">
+                            <span class="font-extrabold text-slate-800 uppercase block tracking-wider text-[10px]">Riwayat Pengerjaan Terakhir</span>
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <div>
+                                    <h4 class="font-bold text-slate-800">Skenario HRD (Fresh Graduate)</h4>
+                                    <p class="text-[10px] text-slate-400">28 Mei 2025</p>
+                                </div>
+                                <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded">Skor 85/100</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <div>
+                                    <h4 class="font-bold text-slate-800">Technical IT Starter</h4>
+                                    <p class="text-[10px] text-slate-400">14 Mei 2025</p>
+                                </div>
+                                <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded">Skor 78/100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-tips" class="inner-tab-content hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
+                            <span class="bg-indigo-50 text-indigo-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase">Mental</span>
+                            <h4 class="font-bold text-slate-900 text-sm">Cara Mengatasi Rasa Blank Saat Menjawab Pertanyaan</h4>
+                            <p class="text-xs text-slate-500">Tarik nafas 3 detik, pakai teknik 'jeda tenang', dan letakkan poin draf utama di pikiran Anda.</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
+                            <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase">Komunikasi</span>
+                            <h4 class="font-bold text-slate-900 text-sm">Menghilangkan Filler Words (Um, Uh, Ah)</h4>
+                            <p class="text-xs text-slate-500">Gunakan jeda bernapas sebagai penukar suara filler. Ini membuat Anda terkesan jauh lebih matang.</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 shadow-xs">
+                            <span class="bg-blue-50 text-brand-600 text-[10px] font-bold px-2 py-1 rounded-md uppercase">STAR Method</span>
+                            <h4 class="font-bold text-slate-900 text-sm">Struktur Jawaban STAR Super Efektif</h4>
+                            <p class="text-xs text-slate-500">Kupas tuntas Situation, Task, Action, dan Result untuk memikat perekrut lewat struktur yang logis.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-komunitas" class="inner-tab-content hidden space-y-6">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-8 text-center space-y-4 shadow-sm max-w-xl mx-auto">
+                        <div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="font-extrabold text-slate-900 text-xl">HirePrep Interview Circle 🌐</h3>
+                        <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Bergabung bersama ribuan fresh graduates lainnya untuk belajar metode STAR, bertukar draf jawaban, hingga mock interview berpasangan.</p>
+                        <button onclick="triggerNotification('Anda berhasil bergabung ke Interview Circle!')" class="px-6 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition">
+                            Masuk Forum Sekarang
+                        </button>
+                    </div>
+                </div>
+
+                <div id="tab-mentor" class="inner-tab-content hidden space-y-6">
+                    <div class="text-center max-w-md mx-auto space-y-2">
+                        <h3 class="font-extrabold text-slate-900 text-lg">Hubungkan Dengan Mentor &amp; Alumni</h3>
+                        <p class="text-slate-500 text-xs">Konsultasikan draf interview Anda langsung dengan HRD profesional.</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 flex items-center space-x-3 shadow-xs">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" class="w-12 h-12 rounded-full object-cover shrink-0" alt="Mentor">
+                            <div class="text-left text-xs">
+                                <h4 class="font-extrabold text-slate-900">Riani Kartika</h4>
+                                <p class="text-slate-400 text-[10px]">Sr. Recruiter di GoTo Group</p>
+                                <span class="text-brand-500 font-bold hover:underline cursor-pointer block mt-1">Book Sesi Mentoring</span>
+                            </div>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 flex items-center space-x-3 shadow-xs">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop" class="w-12 h-12 rounded-full object-cover shrink-0" alt="Mentor">
+                            <div class="text-left text-xs">
+                                <h4 class="font-extrabold text-slate-900">Dimas Aditya</h4>
+                                <p class="text-slate-400 text-[10px]">HR Partner di Shopee</p>
+                                <span class="text-brand-500 font-bold hover:underline cursor-pointer block mt-1">Book Sesi Mentoring</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-progress" class="inner-tab-content hidden space-y-6">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                        <h3 class="font-extrabold text-slate-900 text-base">Progress Latihan Berkelanjutan</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs text-slate-500 font-bold mb-1">
+                                    <span>Total Menit Simulasi</span>
+                                    <span>120 Menit</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2 rounded-full">
+                                    <div class="bg-brand-500 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-pengaturan" class="inner-tab-content hidden space-y-6">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm max-w-md mx-auto space-y-4">
+                        <h3 class="font-extrabold text-slate-900 text-base">Pengaturan Akun</h3>
+                        <div class="space-y-2 text-xs text-left">
+                            <label class="block font-bold text-slate-600">Nama Lengkap</label>
+                            <input type="text" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:outline-none" value="Harumi">
+                        </div>
+                        <button onclick="triggerNotification('Pengaturan tersimpan!')" class="w-full py-2 bg-brand-500 text-white rounded-xl text-xs font-bold transition">Simpan Perubahan</button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ================= STREAMING_CHUNK: Strategic Canvas View ================= -->
+            <!-- ================= PAGE 2: STRATEGIC CANVAS EXPLORER (VPC & BMC) ================= -->
+            <div id="view-strategy-container" class="hidden space-y-10">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <span class="px-3 py-1 bg-brand-50 text-brand-600 text-[10px] font-black rounded-full uppercase tracking-wider border border-brand-100">STRATEGIC ARCHITECTURE</span>
+                    <h2 class="text-2xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-none">Strategic Framework Explorer</h2>
+                    <p class="text-xs md:text-sm text-slate-500 leading-relaxed font-medium">
+                        Visualisasi interaktif dari **Value Proposition Canvas (VPC)** dan **Business Model Canvas (BMC)** Group 8, yang diselaraskan secara presisi mengikuti dokumen lembar revisi terbaru (`WhatsApp Image 2026-06-30 at 5.26.55 PM.jpeg`, `BMC_GROUP 8_INAS_HAFSAH_HARUMI.jpg`, dan `poster Value proposition canvas simple white.jpg`).
+                    </p>
+                </div>
+
+                <!-- 1. VALUE PROPOSITION CANVAS -->
+                <div class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-3 gap-2">
+                        <div class="flex items-center space-x-2.5">
+                            <div class="w-7 h-7 bg-emerald-500 text-white rounded-lg flex items-center justify-center font-bold text-xs shadow-sm">1</div>
+                            <h3 class="text-lg md:text-xl font-extrabold text-slate-900">Value Proposition Canvas (VPC)</h3>
+                        </div>
+                        <span class="text-[10px] text-slate-400 italic font-semibold">(Ref: poster Value proposition canvas simple white.jpg &amp; WhatsApp Image 2026-06-30 at 5.26.55 PM.jpeg)</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Left Pane: Product Square -->
+                        <div class="bg-white border-2 border-emerald-500/20 rounded-3xl p-6 shadow-xs space-y-5 relative">
+                            <div class="absolute right-4 top-4 text-emerald-500/10 text-5xl font-black select-none pointer-events-none">
+                                <i class="fa-solid fa-cube"></i>
+                            </div>
+                            <div class="flex items-center space-x-2 text-emerald-800 font-extrabold text-sm uppercase tracking-wider">
+                                <i class="fa-solid fa-layer-group text-emerald-500"></i>
+                                <span>The Product / Services</span>
+                            </div>
+
+                            <div class="space-y-3 text-xs">
+                                <!-- Features -->
+                                <div class="bg-emerald-50/40 p-3.5 rounded-xl border border-emerald-100/50 space-y-2">
+                                    <h4 class="font-extrabold text-emerald-900 text-[11px] uppercase tracking-wider flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-sliders text-emerald-600"></i>
+                                        <span>Features (Fitur Utama)</span>
+                                    </h4>
+                                    <ul class="space-y-1.5 list-disc pl-4 text-slate-600 font-medium">
+                                        <li>Simulasi interview kerja berbasis AI (Latih mandiri terarah)</li>
+                                        <li>Daftar pertanyaan interview terpercaya (HR &amp; Spesifik bidang keahlian)</li>
+                                        <li>Feedback otomatis (Umpan balik instan performa/kelancaran)</li>
+                                        <li>Anxiety &amp; confidence training (Latihan bernapas &amp; mental positif)</li>
+                                        <li>Tips dan strategi taktis menjawab pertanyaan interview (STAR Method)</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Benefits -->
+                                <div class="bg-emerald-50/40 p-3.5 rounded-xl border border-emerald-100/50 space-y-2">
+                                    <h4 class="font-extrabold text-emerald-900 text-[11px] uppercase tracking-wider flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-check-double text-emerald-600"></i>
+                                        <span>Benefits (Value Gain)</span>
+                                    </h4>
+                                    <p class="text-[9px] text-amber-600 font-bold italic mb-1">Update: Menggunakan pendekatan nilai (value-oriented) menggantikan "AI gives feedback"</p>
+                                    <ul class="space-y-1.5 list-disc pl-4 text-slate-600 font-medium">
+                                        <li>Memberikan arah latihan yang terstruktur dan bermakna</li>
+                                        <li>Meningkatkan rasa percaya diri secara bertahap (step-by-step)</li>
+                                        <li>User menjadi jauh lebih siap menghadapi interview kerja sebenarnya</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Experience -->
+                                <div class="bg-emerald-50/40 p-3.5 rounded-xl border border-emerald-100/50 space-y-2">
+                                    <h4 class="font-extrabold text-emerald-900 text-[11px] uppercase tracking-wider flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-face-smile text-emerald-600"></i>
+                                        <span>User Experience (Pengalaman)</span>
+                                    </h4>
+                                    <ul class="space-y-1.5 list-disc pl-4 text-slate-600 font-medium">
+                                        <li>User merasa "punya pengalaman" nyata sebelum menghadapi interview asli</li>
+                                        <li>User merasa berkembang dan kepercayaan dirinya meningkat secara terukur</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Pane: Customer Circle -->
+                        <div class="bg-white border-2 border-indigo-500/20 rounded-3xl p-6 shadow-xs space-y-5 relative">
+                            <div class="absolute right-4 top-4 text-indigo-500/10 text-5xl font-black select-none pointer-events-none">
+                                <i class="fa-solid fa-circle-user"></i>
+                            </div>
+                            <div class="flex items-center space-x-2 text-indigo-800 font-extrabold text-sm uppercase tracking-wider">
+                                <i class="fa-solid fa-user text-indigo-500"></i>
+                                <span>The Customer Profile</span>
+                            </div>
+
+                            <div class="space-y-3 text-xs">
+                                <!-- Wants -->
+                                <div class="bg-indigo-50/40 p-3.5 rounded-xl border border-indigo-100/50 space-y-2">
+                                    <h4 class="font-extrabold text-indigo-900 text-[11px] uppercase tracking-wider flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-star text-indigo-600"></i>
+                                        <span>Customer Wants</span>
+                                    </h4>
+                                    <ul class="space-y-1.5 list-disc pl-4 text-slate-600 font-medium">
+                                        <li>Percaya diri maksimal saat menghadapi interview kerja</li>
+                                        <li>Terlihat kompeten, lugas, dan tenang di depan interviewer</li>
+                                        <li>Berhasil mendapatkan pekerjaan impian</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Needs -->
+                                <div class="bg-indigo-50/40 p-3.5 rounded-xl border border-indigo-100/50 space-y-2">
+                                    <h4 class="font-extrabold text-indigo-900 text-[11px] uppercase tracking-wider flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-clipboard-list text-indigo-600"></i>
+                                        <span>Customer Needs</span>
+                                    </h4>
+                                    <p class="text-[9px] text-brand-600 font-bold mb-1 italic">Revisi Tambahan (Dari WhatsApp Image 2026-06-30 at 5.26.55 PM.jpeg):</p>
+                                    <blockquote class="bg-white border-l-4 border-brand-500 p-2 text-[10px] text-slate-600 font-bold mb-2 italic">
+                                        "Receive structured guidance to gradually improve confidence and communication skills."
+                                    </blockquote>
+                                    <ul class="space-y-1.5 list-disc pl-4 text-slate-600 font-medium">
+                                        <li>Latihan interview kerja yang praktis, interaktif, dan mudah diakses</li>
+                                        <li>Memahami cara menyusun jawaban interview secara strategis</li>
+                                        <li>Meningkatkan communication skill dan menghilangkan kegugupan verbal</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Fears -->
+                                <div class="bg-indigo-50/40 p-3.5 rounded-xl border border-indigo-100/50 space-y-2">
+                                    <h4 class="font-extrabold text-rose-900 text-[11px] uppercase tracking-wider flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+                                        <span>Customer Fears (Pains)</span>
+                                    </h4>
+                                    <ul class="space-y-1.5 list-disc pl-4 text-rose-800 font-bold">
+                                        <li>Takut gagal dalam seleksi wawancara kerja</li>
+                                        <li>Takut mendadak blank/kehilangan kata-kata saat menjawab</li>
+                                        <li>Takut tidak mendapat pekerjaan (menganggur berkelanjutan)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Context & Substitutes Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-100/80 border border-slate-200 p-4 rounded-2xl">
+                            <span class="font-bold text-slate-900 text-[11px] uppercase block tracking-wider mb-2">Company Context</span>
+                            <p class="text-slate-600"><span class="font-bold text-slate-800">Product Name:</span> HirePrep (Interview Simulation Platform)</p>
+                            <p class="text-slate-600 mt-1"><span class="font-bold text-slate-800">Ideal Customers:</span> Fresh graduate yang sedang aktif mencari pekerjaan pertama.</p>
+                        </div>
+                        <div class="bg-slate-100/80 border border-slate-200 p-4 rounded-2xl">
+                            <span class="font-bold text-slate-900 text-[11px] uppercase block tracking-wider mb-2">Substitutes (Pesaing &amp; Alternatif Pasar)</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold">Glints</span>
+                                <span class="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold">LinkedIn</span>
+                                <span class="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold">Youtube guides</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 italic mt-2">HirePrep mendisrupsi substitusi ini dengan memberikan latihan dua-arah interaktif langsung, bukan sekadar tutorial pasif.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. BUSINESS MODEL CANVAS -->
+                <div class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-3 gap-2">
+                        <div class="flex items-center space-x-2.5">
+                            <div class="w-7 h-7 bg-brand-500 text-white rounded-lg flex items-center justify-center font-bold text-xs shadow-sm">2</div>
+                            <h3 class="text-lg md:text-xl font-extrabold text-slate-900">Business Model Canvas (BMC)</h3>
+                        </div>
+                        <span class="text-[10px] text-slate-400 italic font-semibold">(Ref: BMC_GROUP 8_INAS_HAFSAH_HARUMI.jpg)</span>
+                    </div>
+
+                    <!-- Dynamic BMC GRID -->
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        
+                        <!-- Key Partners -->
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-xs">
+                            <div>
+                                <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-handshake"></i>
+                                    <span>Key Partners</span>
+                                </span>
+                                <ul class="text-[11px] text-slate-600 space-y-2 list-disc pl-3.5 mt-3 font-medium">
+                                    <li>Universities or academic institutions</li>
+                                    <li>Career centers (pusat karir kampus)</li>
+                                    <li>HR and recruiters</li>
+                                    <li>Job platforms (Glints, Jobstreet, dsb)</li>
+                                    <li>Cloud service providers</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Key Activities & Key Resources -->
+                        <div class="md:col-span-1 flex flex-col gap-4">
+                            <!-- Key Activities -->
+                            <div class="bg-white border border-slate-200 p-4 rounded-2xl flex-1 flex flex-col justify-between space-y-3 shadow-xs">
+                                <div>
+                                    <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-gears"></i>
+                                        <span>Key Activities</span>
+                                    </span>
+                                    <ul class="text-[11px] text-slate-600 space-y-1.5 list-disc pl-3.5 mt-3 font-medium">
+                                        <li>Platform development</li>
+                                        <li>Customer support services</li>
+                                        <li>User feedback analysis</li>
+                                        <li>Updating interview database</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Key Resources -->
+                            <div class="bg-white border border-slate-200 p-4 rounded-2xl flex-1 flex flex-col justify-between space-y-3 shadow-xs">
+                                <div>
+                                    <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-server"></i>
+                                        <span>Key Resources</span>
+                                    </span>
+                                    <ul class="text-[11px] text-slate-600 space-y-1.5 list-disc pl-3.5 mt-3 font-medium">
+                                        <li>AI technology</li>
+                                        <li>Interview question database</li>
+                                        <li>Development &amp; IT team</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Value Propositions -->
+                        <div class="bg-gradient-to-b from-brand-50/50 to-white border-2 border-brand-500/20 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-xs">
+                            <div>
+                                <span class="text-[10px] font-black text-brand-700 uppercase tracking-widest flex items-center space-x-1.5">
+                                    <i class="fa-regular fa-lightbulb"></i>
+                                    <span>Value Propositions</span>
+                                </span>
+                                <div class="mt-3 space-y-2.5">
+                                    <p class="text-[10px] font-bold text-brand-900 bg-brand-100/60 p-2.5 rounded-xl leading-normal">
+                                        "Career readiness platform that develops confidence, communication skills, and interview performance using personalized AI coaching."
+                                    </p>
+                                    <ul class="text-[10px] text-slate-600 space-y-1.5 list-disc pl-3.5 font-medium">
+                                        <li>Realistic AI-based job interview simulation</li>
+                                        <li>Automated feedback on answers, communication, and performance</li>
+                                        <li>Interview practice aligned to specific job fields</li>
+                                        <li>Training to reduce anxiety and build confidence</li>
+                                        <li>Tips and strategies for answering effectively</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 4: Customer Relationships & Channels -->
+                        <div class="md:col-span-1 flex flex-col gap-4">
+                            <!-- Customer Relationships -->
+                            <div class="bg-white border border-slate-200 p-4 rounded-2xl flex-1 flex flex-col justify-between space-y-3 shadow-xs">
+                                <div>
+                                    <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-comments"></i>
+                                        <span>Customer Rel.</span>
+                                    </span>
+                                    <ul class="text-[11px] text-slate-600 space-y-1.5 list-disc pl-3.5 mt-3 font-medium">
+                                        <li>Self-service platform (independent practice)</li>
+                                        <li>Personalized AI-generated feedback</li>
+                                        <li>Email/Practice reminders</li>
+                                        <li>Community forum for sharing experiences</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Channels -->
+                            <div class="bg-white border border-slate-200 p-4 rounded-2xl flex-1 flex flex-col justify-between space-y-3 shadow-xs">
+                                <div>
+                                    <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-square-share-nodes"></i>
+                                        <span>Channels</span>
+                                    </span>
+                                    <ul class="text-[11px] text-slate-600 space-y-1.5 list-disc pl-3.5 mt-3 font-medium">
+                                        <li>Social media (Instagram, Tiktok)</li>
+                                        <li>Website platform</li>
+                                        <li>Partnerships with universities</li>
+                                        <li>Job platforms integration</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 5: Customer Segments -->
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-xs">
+                            <div>
+                                <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-users-viewfinder"></i>
+                                    <span>Customer Segments</span>
+                                </span>
+                                <ul class="text-[11px] text-slate-700 space-y-2.5 list-disc pl-3.5 mt-3 font-semibold">
+                                    <li class="text-brand-700">Fresh graduates seeking employment</li>
+                                    <li class="text-emerald-700">Final-year university students</li>
+                                    <li class="text-indigo-700">Job seekers with limited interview experience</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Cost & Revenue Grid structure -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <!-- Cost Structure -->
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
+                            <span class="text-[10px] font-black text-slate-900 uppercase tracking-widest flex items-center space-x-1.5">
+                                <i class="fa-solid fa-coins text-slate-500"></i>
+                                <span>Cost Structure</span>
+                            </span>
+                            <ul class="text-slate-600 space-y-1.5 list-disc pl-4 mt-2 font-medium">
+                                <li>Pengembangan dan pemeliharaan server integrasi AI &amp; Cloud</li>
+                                <li>Pemeliharaan dan pembaharuan basis data pertanyaan interview</li>
+                                <li>Biaya operasional pengembangan IT, Software Engineering &amp; Platform</li>
+                                <li>Biaya akuisisi marketing &amp; kemitraan dengan universitas/campus recruitment</li>
+                            </ul>
+                        </div>
+
+                        <!-- Revenue Stream -->
+                        <div class="bg-gradient-to-r from-brand-50/20 to-white border border-brand-200 p-4 rounded-2xl space-y-2 shadow-xs">
+                            <span class="text-[10px] font-black text-brand-900 uppercase tracking-widest flex items-center space-x-1.5">
+                                <i class="fa-solid fa-hand-holding-dollar text-brand-500"></i>
+                                <span>Revenue Streams</span>
+                            </span>
+                            <ul class="text-slate-700 space-y-1.5 list-disc pl-4 mt-2 font-semibold">
+                                <li>Subscription (Berlangganan bulanan/mingguan paket simulasi eksklusif)</li>
+                                <li>B2B Partnership dengan universitas atau institusi pendidikan karir</li>
+                                <li>Freemium Model (Akses latihan simulasi dasar gratis)</li>
+                                <li>Pay-per-session (Konsultasi berbayar langsung dengan psikolog/career expert)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Upgrade To Premium Interactive Dialog Modal -->
+    <div id="premium-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div onclick="closePremiumModal()" class="absolute inset-0 bg-slate-900/40 backdrop-blur-xs"></div>
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 max-w-md w-full relative z-10 space-y-6 shadow-xl animate-scale-up">
+            <div class="text-center space-y-3">
+                <div class="w-14 h-14 bg-amber-100 text-amber-500 rounded-2xl flex items-center justify-center text-3xl mx-auto shadow-inner-sm">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h3 class="font-extrabold text-slate-900 text-xl">Upgrade HirePrep Premium</h3>
+                <p class="text-xs text-slate-500">Raih kepercayaan diri optimal untuk performa interview kerja terbaik.</p>
+            </div>
+
+            <!-- Premium advantages list -->
+            <ul class="text-xs text-slate-600 space-y-3.5 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <li class="flex items-start space-x-2.5">
+                    <i class="fa-solid fa-check text-emerald-500 mt-0.5 font-bold"></i>
+                    <span>Akses latihan tanpa batas untuk 100+ bidang spesifikasi keahlian khusus.</span>
+                </li>
+                <li class="flex items-start space-x-2.5">
+                    <i class="fa-solid fa-check text-emerald-500 mt-0.5 font-bold"></i>
+                    <span>Analisis pengucapan verbal &amp; tips detail struktur jawaban STAR.</span>
+                </li>
+                <li class="flex items-start space-x-2.5">
+                    <i class="fa-solid fa-check text-emerald-500 mt-0.5 font-bold"></i>
+                    <span>1 Sesi Mock Interview langsung per bulan bersama Psikolog/Expert HRD.</span>
+                </li>
+            </ul>
+
+            <div class="space-y-2">
+                <button onclick="triggerNotification('Pembayaran Premium Berhasil Diaktifkan!'); closePremiumModal();" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl text-xs md:text-sm shadow-md transition">
+                    Mulai Langganan Premium Rp 49.000 / mgu
+                </button>
+                <button onclick="closePremiumModal()" class="w-full py-2.5 text-xs text-slate-400 hover:text-slate-600 font-bold text-center">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Play Recording Dialog Modal -->
+    <div id="play-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div onclick="closePlayModal()" class="absolute inset-0 bg-slate-900/40 backdrop-blur-xs"></div>
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 max-w-lg w-full relative z-10 space-y-4 shadow-xl">
+            <div class="flex items-center justify-between border-b border-slate-150 pb-3">
+                <h3 class="font-extrabold text-slate-900 text-sm">Review Terakhir Harumi</h3>
+                <button onclick="closePlayModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <!-- Video Replay Mock -->
+            <div class="aspect-video bg-slate-900 rounded-2xl flex items-center justify-center relative overflow-hidden shadow-inner">
+                <div class="absolute inset-0 flex flex-col justify-center items-center text-slate-200 space-y-2">
+                    <i class="fa-regular fa-face-smile text-5xl text-emerald-400 animate-pulse"></i>
+                    <p class="text-xs font-bold text-slate-300">Memutar rekaman latihan: "Skenario HRD"</p>
+                    <span class="text-[10px] text-slate-500">Kamera Harumi aktif selama simulasi mandiri</span>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 leading-relaxed italic">
+                "Umpan balik: Penataan emosi terlihat cukup baik pada menit ke 1.20, namun silakan kurangi frekuensi filler word 'um' untuk tampil lebih meyakinkan."
+            </p>
+        </div>
+    </div>
+
+    <!-- Floating Global Alert Message box -->
+    <div id="alert-box" class="hidden fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-xl flex items-center space-x-3 transition-all duration-300 transform translate-y-10">
+        <div class="w-6 h-6 bg-brand-500 text-white rounded-lg flex items-center justify-center text-xs">
+            <i class="fa-solid fa-circle-info"></i>
+        </div>
+        <p id="alert-message" class="text-xs font-semibold">Notifikasi aplikasi di sini!</p>
+    </div>
+
+    <!-- App Interactions & Dynamic Data Logic -->
+    <script>
+        // Questions Database from VPC updates
+        const questionsDatabase = {
+            tech: {
+                question: "Ceritakan proyek IT tersulit yang pernah Anda rancang dan solusi pemecahan bug yang Anda lakukan?",
+                tip: "Tekankan metode STAR. Sebutkan aksi nyata (Action) dalam pemecahan masalah bug overload query database.",
+                draft: "Saya pernah membangun web e-commerce sederhana kelompok. Terjadi masalah bug overload query database yang sangat mengganggu performa. Saya berinisiatif menggunakan indexing database dan teknik caching redis. Hasilnya, performa load aplikasi berkurang drastis dari 4 detik menjadi 0.5 detik.",
+                positives: [
+                    "Penggunaan aksi aktif yang melambangkan kematangan mental (Saya berinisiatif, Saya berhasil).",
+                    "Penyajian data kuantitatif secara detail (dari 4 detik menjadi 0.5 detik).",
+                    "Struktur kalimat tegas mengurangi rasa takut gagal."
+                ],
+                negatives: [
+                    "Tambahkan penjelasan mengenai bagaimana Anda mengukur kebutuhan caching sejak awal.",
+                    "Perjelas andil rekan setim agar terkesan kooperatif."
+                ],
+                star: "<strong>Situation:</strong> Proyek website e-commerce akhir semester.<br><strong>Task:</strong> Mengatasi bottleneck performa overload database query.<br><strong>Action:</strong> Melakukan indexing query & integrasi Redis cache.<br><strong>Result:</strong> Web-load melesat naik hingga 8x lipat lebih cepat."
+            },
+            marketing: {
+                question: "Bagaimana merancang kampanye produk digital baru dengan budget yang sangat terbatas?",
+                tip: "Fokus pada pemanfaatan pertumbuhan organic video di TikTok / Reels dan micro-influencer.",
+                draft: "Saat memimpin promosi brand kelompok, kami terkendala dana. Saya merancang kompetisi video interaktif organik di TikTok. Berkat storytelling terarah bagi gen-Z, jangkauan organik mencapai 150 ribu penonton dengan tingkat konversi penjualan hingga 5%.",
+                positives: [
+                    "Fokus tajam pada kelebihan efektivitas taktis media sosial.",
+                    "Penyampaian data conversion rate 5% yang meyakinkan."
+                ],
+                negatives: [
+                    "Deskripsikan hambatan awal di porsi Situation sebelum menceritakan strategi viral."
+                ],
+                star: "<strong>Situation:</strong> Brand lokal baru tanpa anggaran periklanan.<br><strong>Task:</strong> Mencapai 1.000 pelanggan perdana.<br><strong>Action:</strong> Memproduksi video berseri TikTok yang interaktif.<br><strong>Result:</strong> Meraih jangkauan organik 150k viewers & konversi pesat."
+            },
+            hr: {
+                question: "Ceritakan latar belakang Anda dan mengapa Anda sangat cocok untuk menempati posisi ini?",
+                tip: "Sebutkan core value Anda yang sejalan dengan tujuan perusahaan untuk menunjukkan rasa percaya diri optimal.",
+                draft: "Saya lulusan Psikologi yang memiliki ketertarikan tinggi pada relasi manusia. Selama kuliah, saya memimpin divisi internal organisasi kampus, di mana saya melatih rasa empati, komunikasi terarah, serta menyusun materi latihan anggota. Ini sangat sejalan dengan visi HRD di perusahaan Anda.",
+                positives: [
+                    "Melambangkan rasa empati tinggi dan kecocokan nilai organisasi.",
+                    "Kalimat berorientasi pada value masa depan perusahaan."
+                ],
+                negatives: [
+                    "Hindari membaca ulang data CV secara mentah. Tambahkan pencapaian konkrit kepemimpinan Anda."
+                ],
+                star: "<strong>Situation:</strong> Lulusan baru Psikologi aktif berorganisasi.<br><strong>Task:</strong> Melamar posisi staf HR Specialist.<br><strong>Action:</strong> Menerapkan empati & manajemen kepemimpinan tim mahasiswa.<br><strong>Result:</strong> Kesiapan optimal berkontribusi pada efisiensi rekrutmen."
+            },
+            pman: {
+                question: "Bagaimana cara Anda memprioritaskan fitur produk ketika stakeholder memiliki kepentingan yang berbeda?",
+                tip: "Sebutkan framework prioritas profesional seperti RICE (Reach, Impact, Confidence, Effort) untuk membuktikan kelayakan taktis Anda.",
+                draft: "Dalam mengelola draf tugas akhir produk kelompok, kami menggunakan metode prioritas RICE secara transparan. Melalui diskusi logis bersama rekan pengembang dan perwakilan bisnis, keputusan final dapat dicapai dengan target peluncuran yang sangat realistis.",
+                positives: [
+                    "Penerapan metode industri profesional (RICE Framework).",
+                    "Menunjukkan kemampuan mediasi konflik yang matang."
+                ],
+                negatives: [
+                    "Detailkan parameter RICE mana yang menjadi pertimbangan utama pada kasus tersebut."
+                ],
+                star: "<strong>Situation:</strong> Konflik prioritas antartim di proyek produk.<br><strong>Task:</strong> Menentukan target backlog kuartal pertama.<br><strong>Action:</strong> Menerapkan penilaian RICE secara transparan bersama stakeholder.<br><strong>Result:</strong> Keputusan mufakat yang realistis & rampung tepat waktu."
+            }
+        };
+
+        // Switch Main Views (Demo Platform vs Strategic Canvas)
+        function switchViewMode(mode) {
+            const productNav = document.getElementById('nav-btn-product');
+            const strategyNav = document.getElementById('nav-btn-strategy');
+            const productContainer = document.getElementById('view-product-container');
+            const strategyContainer = document.getElementById('view-strategy-container');
+
+            if (mode === 'product') {
+                productContainer.classList.remove('hidden');
+                strategyContainer.classList.add('hidden');
+                
+                productNav.className = "px-5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 bg-white text-brand-600 shadow-sm";
+                strategyNav.className = "px-5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all duration-300";
+            } else {
+                productContainer.classList.add('hidden');
+                strategyContainer.classList.remove('hidden');
+                
+                productNav.className = "px-5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all duration-300";
+                strategyNav.className = "px-5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 bg-white text-brand-600 shadow-sm";
+            }
+        }
+
+        // Toggle Sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar-panel');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        // Quick shortcut to strategic canvas on mobile
+        function toggleMobileStrategic() {
+            switchViewMode('strategy');
+            toggleSidebar();
+            triggerNotification("Masuk ke Strategic Canvas Explorer");
+        }
+
+        // Switch Active Sub Tab inside Product Platform
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.inner-tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+            
+            // Show selected tab content
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            // Style matching active button in sidebar
+            const sidebarButtons = document.querySelectorAll('.sidebar-btn');
+            sidebarButtons.forEach(btn => {
+                btn.className = "sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200";
+            });
+
+            // If the button exists, make it active style
+            const activeBtn = document.getElementById(`side-${tabId}`);
+            if (activeBtn) {
+                activeBtn.className = "sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-brand-500 text-white shadow-sm";
+            }
+
+            // Automatic View Mode back to Product Platform
+            switchViewMode('product');
+
+            // Auto-hide mobile sidebar
+            const sidebar = document.getElementById('sidebar-panel');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        // Trigger daily streak increment
+        let streak = 7;
+        let claimedToday = false;
+        function claimDailyStreak() {
+            if (claimedToday) {
+                triggerNotification("Anda sudah absen hari ini!");
+                return;
+            }
+            streak++;
+            document.getElementById('streak-counter').innerText = streak;
+            claimedToday = true;
+            triggerNotification("Absensi berhasil! Kunci sukses konsistensi.");
+        }
+
+        // Load specific scenario question on dropdown change
+        function loadSimulationQuestion() {
+            const track = document.getElementById('sim-track').value;
+            const item = questionsDatabase[track];
+            
+            document.getElementById('sim-question-text').innerText = `"${item.question}"`;
+            document.getElementById('sim-tip-text').innerText = `Tips: ${item.tip}`;
+            
+            // Reset feedback
+            document.getElementById('analysis-feedback-panel').classList.add('hidden');
+            document.getElementById('sim-answer').value = "";
+            document.getElementById('sim-dialogue').innerText = `"Bagus sekali! Skenario ini sangat ideal bagi portofolio Anda. Silakan isi draf respons Anda."`;
+        }
+
+        // Help user by filling template draf
+        function insertSimulatedDraft() {
+            const track = document.getElementById('sim-track').value;
+            document.getElementById('sim-answer').value = questionsDatabase[track].draft;
+            document.getElementById('sim-dialogue').innerText = `"Draf yang luar biasa! Silakan klik 'Analisis Jawaban' untuk membaca coaching report detail."`;
+        }
+
+        // Reset simulation field
+        function resetSimulation() {
+            document.getElementById('sim-answer').value = "";
+            document.getElementById('analysis-feedback-panel').classList.add('hidden');
+            document.getElementById('sim-dialogue').innerText = `"Mari kita draf ulang jawaban Anda secara tenang. Jangan cemas atau takut gagal."`;
+        }
+
+        // Start quick simulator from dashboard cards
+        function startQuickSimulation(trackValue) {
+            switchTab('simulasi');
+            document.getElementById('sim-track').value = trackValue;
+            loadSimulationQuestion();
+        }
+
+        // Execute AI Evaluation Analysis Engine
+        function runAiAnalysis() {
+            const answer = document.getElementById('sim-answer').value.trim();
+            if (answer.length < 15) {
+                triggerNotification("Tulis jawaban lebih panjang agar AI bisa mendeteksi.");
+                return;
+            }
+
+            document.getElementById('sim-dialogue').innerText = `"Membaca draf Anda... Analisis berjalan sukses!"`;
+            const track = document.getElementById('sim-track').value;
+            const data = questionsDatabase[track];
+
+            // Render Positive points
+            const positivesList = document.getElementById('feedback-positives-list');
+            positivesList.innerHTML = "";
+            data.positives.forEach(item => {
+                positivesList.innerHTML += `<li>${item}</li>`;
+            });
+
+            // Render Negative points
+            const negativesList = document.getElementById('feedback-negatives-list');
+            negativesList.innerHTML = "";
+            data.negatives.forEach(item => {
+                negativesList.innerHTML += `<li>${item}</li>`;
+            });
+
+            // Render STAR Suggestion
+            document.getElementById('feedback-star').innerHTML = data.star;
+
+            // Show panel
+            const panel = document.getElementById('analysis-feedback-panel');
+            panel.classList.remove('hidden');
+            panel.scrollIntoView({ behavior: 'smooth' });
+
+            triggerNotification("Laporan evaluasi AI HirePrep berhasil dibuat!");
+        }
+
+        // Notification pop-up system
+        function triggerNotification(message = "Fitur diaktifkan secara sukses!") {
+            const alertBox = document.getElementById('alert-box');
+            document.getElementById('alert-message').innerText = message;
+            
+            alertBox.classList.remove('hidden');
+            setTimeout(() => {
+                alertBox.classList.remove('translate-y-10');
+                alertBox.classList.add('translate-y-0');
+            }, 50);
+
+            setTimeout(() => {
+                alertBox.classList.add('translate-y-10');
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                }, 300);
+            }, 3000);
+        }
+
+        // Premium modal toggles
+        function openPremiumModal() {
+            document.getElementById('premium-modal').classList.remove('hidden');
+        }
+        function closePremiumModal() {
+            document.getElementById('premium-modal').classList.add('hidden');
+        }
+
+        // Play video modal toggles
+        function playLastRecording() {
+            document.getElementById('play-modal').classList.remove('hidden');
+        }
+        function closePlayModal() {
+            document.getElementById('play-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
